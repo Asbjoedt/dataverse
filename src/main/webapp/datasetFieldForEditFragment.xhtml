@@ -76,6 +76,17 @@
         </p:inputTextarea>
     <p:watermark for="description" value="#{dsfv.datasetField.datasetFieldType.localeWatermark}"></p:watermark>
 
+    <ui:fragment rendered="#{cvoc==null}">
+        <p:selectBooleanCheckbox value="#{dsfv.valueForEdit}" id="description" pt:aria-required="#{dsf.required}"
+                         rows="1" cols="60" styleClass="form-control"
+                         rendered="#{dsfv.datasetField.datasetFieldType.fieldType == 'BOOLEAN'}">
+            <c:if test="#{dsfvIndex!=0}">
+                <f:passThroughAttribute name="aria-label" value="#{bundle['dataset.additionalEntry']}" />
+            </c:if>
+        </p:selectBooleanCheckbox>
+        <p:watermark for="description" value="#{dsfv.datasetField.datasetFieldType.localeWatermark}"></p:watermark>
+    </ui:fragment>
+
     <div class="ui-message ui-message-error ui-widget ui-corner-all" aria-live="polite" jsf:rendered="#{dsfvIndex eq 0 and !empty dsfv.datasetField.validationMessage}">
         <span class="ui-message-error-detail">#{dsfv.datasetField.validationMessage}</span>
     </div>

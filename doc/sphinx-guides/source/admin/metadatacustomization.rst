@@ -284,6 +284,9 @@ FieldType definitions
 |               | no value and display no data       |
 |               | entry control.                     |
 +---------------+------------------------------------+
+| boolean       | A checkbox constituting a boolean  |
+|               | value either true or false.        |
++---------------+------------------------------------+
 | date          | A date, expressed in one of three  |
 |               | resolutions of the form            |
 |               | YYYY-MM-DD, YYYY-MM, or YYYY.      |

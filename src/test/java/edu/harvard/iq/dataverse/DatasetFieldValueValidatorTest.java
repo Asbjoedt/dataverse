@@ -7,6 +7,8 @@ package edu.harvard.iq.dataverse;
 
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import edu.harvard.iq.dataverse.validation.BooleanValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -107,6 +109,22 @@ public class DatasetFieldValueValidatorTest {
         assertEquals(true, result);
         
         value.setValue("12.14");
+        result = instance.isValid(value, ctx);
+        assertEquals(false, result);
+
+        //Boolean
+        dft.setFieldType(DatasetFieldType.FieldType.BOOLEAN);
+        value.setValue("true");
+        result = instance.isValid(value, ctx);
+        assertEquals(true, result);
+
+        //Capital letters in boolean is not valid
+        value.setValue("True");
+        result = instance.isValid(value, ctx);
+        assertEquals(false, result);
+
+        //Null values in boolean is not valid
+        value.setValue("");
         result = instance.isValid(value, ctx);
         assertEquals(false, result);
     }
@@ -227,5 +245,19 @@ public class DatasetFieldValueValidatorTest {
         assertTrue(!DatasetFieldValueValidator.validateBoundingBox("360", "0", "90", "-90"));
         assertTrue(!DatasetFieldValueValidator.validateBoundingBox("", "", "", ""));
         assertTrue(!DatasetFieldValueValidator.validateBoundingBox(null, null, null, null));
+    }
+
+    @Test
+    public void testInvalidBoolean() {
+        // valid tests
+        assertTrue(BooleanValidator.isBooleanValid("true"));
+        assertTrue(BooleanValidator.isBooleanValid("false"));
+
+        // invalid tests
+        assertTrue(!BooleanValidator.isBooleanValid(""));
+        assertTrue(!BooleanValidator.isBooleanValid("True"));
+        assertTrue(!BooleanValidator.isBooleanValid("False"));
+        assertTrue(!BooleanValidator.isBooleanValid("TRUE"));
+        assertTrue(!BooleanValidator.isBooleanValid("FALSE"));
     }
 }

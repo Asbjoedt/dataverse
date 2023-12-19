@@ -11,10 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import edu.harvard.iq.dataverse.util.BundleUtil;
+import edu.harvard.iq.dataverse.validation.BooleanValidator;
 import edu.harvard.iq.dataverse.validation.EMailValidator;
 import edu.harvard.iq.dataverse.validation.URLValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -208,6 +209,14 @@ public class DatasetFieldValueValidator implements ConstraintValidator<ValidateD
             boolean isValidMail = EMailValidator.isEmailValid(value.getValue());
             if (!isValidMail) {
                 context.buildConstraintViolationWithTemplate(dsfType.getDisplayName() + " " + value.getValue() +  "  " + BundleUtil.getStringFromBundle("dataset.metadata.invalidEmail")).addConstraintViolation();
+                return false;
+            }
+        }
+
+        if (fieldType.equals(FieldType.BOOLEAN) && !lengthOnly) {
+            boolean isValidBoolean = BooleanValidator.isBooleanValid(value.getValue());
+            if (!isValidBoolean) {
+                context.buildConstraintViolationWithTemplate(dsfType.getDisplayName() + " " + value.getValue() +  "  " + BundleUtil.getStringFromBundle("dataset.metadata.invalidBoolean")).addConstraintViolation();
                 return false;
             }
         }
